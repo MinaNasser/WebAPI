@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using WebAPI.Domain;
+using WebAPI.Models;
 
 
 namespace WebAPI.Models
@@ -18,7 +18,6 @@ namespace WebAPI.Models
         [Required]
         [MaxLength(30)]
         [MinLength(3)]
-        [UniqName(msg ="Enter Uniq Name Please")]
         //[Remote(action:"CheckName",controller:"Employee",ErrorMessage ="Name Must Contain ITI")]
         public string Name { get; set; }
 
@@ -46,9 +45,10 @@ namespace WebAPI.Models
 // Add Configuration for Employees Table with Fluent API
 public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
+
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.ToTable("Employees");
+        
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Name).IsRequired().HasMaxLength(50);
         builder.Property(e => e.Salary).IsRequired();

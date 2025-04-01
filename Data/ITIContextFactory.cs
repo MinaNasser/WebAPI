@@ -10,7 +10,7 @@ namespace WebAPI.Data
             var optionsBuilder = new DbContextOptionsBuilder<ITIContext>();
             optionsBuilder
                 .UseLazyLoadingProxies()
-                .UseSqlServer("Server=.;Database=ITIWithCristen;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true");
+                .UseSqlServer("Server=.;Database=ITIWithCristenApi;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true");
 
             return new ITIContext(optionsBuilder.Options);
         }
