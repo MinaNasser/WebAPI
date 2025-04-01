@@ -1,4 +1,6 @@
 
+using Services;
+
 namespace WebAPI
 {
     public class Program
@@ -18,7 +20,8 @@ namespace WebAPI
             //    options.UseLazyLoadingProxies()
             //           .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             //});
-
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             var app = builder.Build();
 
