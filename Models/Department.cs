@@ -22,8 +22,8 @@ namespace WebAPI.Models
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
-            builder.Property(d => d.Name).IsRequired().HasMaxLength(50);
-            builder.Property(d => d.ManagerName).HasMaxLength(50);
+            builder.Property(d => d.Name).IsRequired().HasMaxLength(70);
+            builder.Property(d => d.ManagerName).HasMaxLength(70);
             
         }
     }

@@ -1,5 +1,9 @@
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Services;
+using WebAPI.Data;
+using WebAPI.Models;
 
 namespace WebAPI
 {
@@ -15,14 +19,17 @@ namespace WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            //builder.Services.AddDbContext<ITIContext>(options =>
-            //{
-            //    options.UseLazyLoadingProxies()
-            //           .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            //});
+            builder.Services.AddDbContext<ITIContext>(options =>
+            {
+                options.UseLazyLoadingProxies()
+                       .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                            .AddEntityFrameworkStores<ITIContext>()
+                            .AddDefaultTokenProviders();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -41,3 +48,6 @@ namespace WebAPI
         }
     }
 }
+
+
+///Get-InstalledPackage -Web WebAPI
