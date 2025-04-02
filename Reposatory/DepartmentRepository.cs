@@ -6,7 +6,7 @@ using WebAPI.Models;
 
 namespace WebAPI.Repository
 {
-    public class DepartmentRepository:IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         public string Id { get; set; }
 
@@ -43,6 +43,11 @@ namespace WebAPI.Repository
         public void Save()
         {
             context.SaveChanges();
+        }
+
+        public Department GetByName(string name)
+        {
+            return context.Department.FirstOrDefault(d => d.Name == name);
         }
     }
 }

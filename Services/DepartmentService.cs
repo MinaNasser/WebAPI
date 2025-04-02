@@ -44,6 +44,11 @@ namespace Services
             _departmentRepository.Delete(id);
             _departmentRepository.Save();
         }
+
+        public Department GetDepartmentByName(string name)
+        {
+            return _departmentRepository.GetByName(name);
+        }
     }
 
 }

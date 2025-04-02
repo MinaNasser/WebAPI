@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Services;
 using WebAPI.Data;
 using WebAPI.Models;
+using WebAPI.Repository;
 
 namespace WebAPI
 {
@@ -25,8 +26,14 @@ namespace WebAPI
                        .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+
+
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                             .AddEntityFrameworkStores<ITIContext>()
                             .AddDefaultTokenProviders();
@@ -50,4 +57,4 @@ namespace WebAPI
 }
 
 
-///Get-InstalledPackage -Web WebAPI
+///Get-InstalledPackage -Web  WebAPI

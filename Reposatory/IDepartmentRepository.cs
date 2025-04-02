@@ -21,6 +21,6 @@ namespace WebAPI.Repository
         public Department GetById(int id);
 
         public void Save();
-        
+        Department GetByName(string name);
     }
 }
