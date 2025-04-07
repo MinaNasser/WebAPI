@@ -27,7 +27,7 @@ namespace Services
             return _employeeRepository.GetById(id);
         }
 
-        public void AddEmployee(Employee employee)
+        public void CreateEmployee(Employee employee)
         {
             _employeeRepository.Add(employee);
             _employeeRepository.Save();
