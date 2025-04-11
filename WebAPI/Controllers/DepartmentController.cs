@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services;
 using WebAPI.Models;
+using WebAPIDotNet.DTO;
 
 namespace WebAPI.Controllers
 {
@@ -15,6 +16,25 @@ namespace WebAPI.Controllers
             _depServ = departmentService;
         }
 
+        [HttpGet("Count")]
+        public IActionResult GetDEptDetails()
+        {
+            List<Department> departments = _depServ.GetAllDepartments();
+            List<DeptWithEmpCountDTO> deptWithEmps = new List<DeptWithEmpCountDTO>();
+            foreach (Department department in departments)
+            {
+                {
+                    DeptWithEmpCountDTO countDTO = new DeptWithEmpCountDTO();
+                    countDTO.Id = department.Id;
+                    countDTO.Name = department.Name;
+                    countDTO.ManagerName = department.Name;
+                    countDTO.EmpCount = department.Employees.Count;
+                    deptWithEmps.Add(countDTO);
+                }
+
+            }
+            return Ok(deptWithEmps);
+        }
         // ✅ عرض جميع الأقسام
         [HttpGet]
         public IActionResult DisplayAllDept()
