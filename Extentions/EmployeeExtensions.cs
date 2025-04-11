@@ -8,9 +8,9 @@ namespace WebAPI.Extentions
 {
     public static class EmployeeExtensions
     {
-        public static EmpWithDEptListViewModel Expand(this Employee emp, List<Department> departments)
+        public static EmpWithDeptListViewModel Expand(this Employee emp)
         {
-            return new EmpWithDEptListViewModel
+            return new EmpWithDeptListViewModel
             {
                 Id = emp.Id,
                 Name = emp.Name,
@@ -19,7 +19,7 @@ namespace WebAPI.Extentions
                 ImageURL = emp.ImageURL,
                 Address = emp.Address,
                 DepartmentID = emp.DepartmentID,
-                DeptList = departments
+
             };
         }
         public static EmpAddVM toVMModel(this Employee emp)
@@ -49,7 +49,33 @@ namespace WebAPI.Extentions
                 DepartmentID = emp.DepartmentID
             };
         }
+        public static EmpWithDeptListViewModel ToDTO(this Employee employee)
+        {
+            return new EmpWithDeptListViewModel
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Salary = employee.Salary,
+                JobTitle = employee.JobTitle,
+                ImageURL = employee.ImageURL,
+                Address = employee.Address,
+                DepartmentID = employee.DepartmentID
+            };
+        }
 
+        public static Employee ToModel(this EmpWithDeptListViewModel dto)
+        {
+            return new Employee
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Salary = dto.Salary,
+                JobTitle = dto.JobTitle,
+                ImageURL = dto.ImageURL,
+                Address = dto.Address,
+                DepartmentID = dto.DepartmentID
+            };
+        }
 
 
 
