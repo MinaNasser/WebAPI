@@ -1,4 +1,5 @@
 
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Services;
@@ -31,6 +32,7 @@ namespace WebAPI
 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddTransient<EmailService>();
 
 
 
@@ -43,6 +45,19 @@ namespace WebAPI
             //        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
             //        options.JsonSerializerOptions.WriteIndented = true;
             //    });
+            builder.Services.AddHangfire(
+                h => h.UseSqlServerStorage(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    new Hangfire.SqlServer.SqlServerStorageOptions
+                    {
+                        QueuePollInterval = TimeSpan.FromSeconds(15),
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    }
+                    )
+                );
+            builder.Services.AddHangfireServer();
+
 
             var app = builder.Build();
 
@@ -52,6 +67,34 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            //app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            //{
+            //    Authorization = new[] { new MyAuthorizationFilter() }
+            //});
+
+            app.UseHangfireDashboard("/hangfire");
+            BackgroundJob.Enqueue<EmailService>(service => service.SendEmail("minanasser82018@gmail.com"));
+            app.MapGet("/", (EmailService emailService) =>
+            {
+                BackgroundJob.Enqueue<EmailService>(service => service.SendEmail("example@example.com"));
+                return "Email job enqueued!";
+            });
+
+
+            BackgroundJob.Schedule(
+                () => Console.WriteLine("HangFire Schedule BackgroundJob  "),
+                TimeSpan.FromSeconds(40)
+                );
+
+
+            RecurringJob.AddOrUpdate(
+                recurringJobId: "WriteConsoleJob", // ID ÝÑíÏ áßá æÙíÝÉ
+                methodCall: () => Console.WriteLine($"HangFire Schedule BackgroundJob at {DateTime.Now}"),
+                cronExpression: Cron.Minutely,
+                options: new RecurringJobOptions
+                {
+                    TimeZone = TimeZoneInfo.Local
+                });
 
             app.UseAuthorization();
 
